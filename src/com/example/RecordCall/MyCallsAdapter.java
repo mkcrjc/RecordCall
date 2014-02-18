@@ -2,15 +2,19 @@
 package com.example.RecordCall;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -26,13 +30,23 @@ public class MyCallsAdapter extends ArrayAdapter<Model> {
 	private final Context context;
 	private List<Model> list;
 	public static final String FILE_DIRECTORY = "recordedCalls";
-	
-	
-	public MyCallsAdapter(Context context, List<Model> list) {
-		super(context, R.layout.rowlayout, list);
+
+    private static final String[] PHOTO_ID_PROJECTION = new String[] {
+            ContactsContract.Contacts.PHOTO_ID
+    };
+
+    private static final String[] PHOTO_BITMAP_PROJECTION = new String[] {
+            ContactsContract.CommonDataKinds.Photo.PHOTO
+    };
+
+    private final ContentResolver contentResolver;
+
+    public MyCallsAdapter(Context context, List<Model> list) {
+		super(context, R.layout.record_list_item, list);
 		this.list = list;
 		this.context = context;
-	}
+        contentResolver = context.getContentResolver();
+    }
 	
 	
 
@@ -40,11 +54,21 @@ public class MyCallsAdapter extends ArrayAdapter<Model> {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		final View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
-		final TextView textView = (TextView) rowView.findViewById(R.id.label_list);
-		final TextView textView2 = (TextView) rowView.findViewById(R.id.label_list_2);
-		//final ImageView imgDelete = (ImageView)rowView.findViewById(R.id.img_delete);
-		
+		final View rowView = inflater.inflate(R.layout.record_list_item, parent, false);
+		final TextView tvName = (TextView) rowView.findViewById(R.id.record_list_item_tvName);
+        final TextView tvDate = (TextView) rowView.findViewById(R.id.record_list_item_tvDate);
+        final ImageView ivAvatar = (ImageView)rowView.findViewById(R.id.record_list_item_ivAvatar);
+
+        if (list.get(position).getUriImage() != null)
+        {
+            Bitmap bitmap = getBitmap(Long.parseLong(list.get(position).getUriImage()));
+            ivAvatar.setImageBitmap(bitmap);
+        }
+        else
+        {
+            ivAvatar.setImageResource(R.drawable.ava_default_person);
+        }
+
 		String myDateStr = list.get(position).getCallName().substring(1, 15);
 		SimpleDateFormat curFormater = new SimpleDateFormat("yyyyMMddkkmmss");
 		
@@ -53,8 +77,8 @@ public class MyCallsAdapter extends ArrayAdapter<Model> {
 			dateObj = curFormater.parse(myDateStr);
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} 
-		textView2.setText(DateFormat.getDateInstance().format(dateObj) + " " + DateFormat.getTimeInstance().format(dateObj));
+		}
+        tvDate.setText(DateFormat.getDateInstance().format(dateObj) + " " + DateFormat.getTimeInstance().format(dateObj));
 		String myPhone = list.get(position).getCallName().substring(16, list.get(position).getCallName().length() - 4);
 		
 		if (!myPhone.matches("^[\\d]{1,}$"))
@@ -65,8 +89,8 @@ public class MyCallsAdapter extends ArrayAdapter<Model> {
 		{
 			myPhone = list.get(position).getUserNameFromContact();
 		}
-		
-		textView.setText(myPhone);
+
+        tvName.setText(myPhone);
 		
 		return rowView;
 	}
@@ -156,4 +180,26 @@ public class MyCallsAdapter extends ArrayAdapter<Model> {
 	{
 		list.remove(position);
 	}
+    public Bitmap getBitmap(Long photoId)
+    {
+        BitmapDrawable bd=(BitmapDrawable) context.getResources().getDrawable(R.drawable.ava_default_person);
+        int width=bd.getBitmap().getWidth();
+        int height=bd.getBitmap().getHeight();
+        final Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photoId);
+        final Cursor cursor = contentResolver.query(uri, PHOTO_BITMAP_PROJECTION, null, null, null);
+        try {
+            Bitmap thumbnail = null;
+            if (cursor.moveToFirst()) {
+                final byte[] thumbnailBytes = cursor.getBlob(0);
+                if (thumbnailBytes != null) {
+                    thumbnail = BitmapFactory.decodeByteArray(thumbnailBytes, 0, thumbnailBytes.length);
+                }
+            }
+//            return Bitmap.createScaledBitmap(thumbnail, width, height, false);
+            return thumbnail;
+        }
+        finally {
+            cursor.close();
+        }
+    }
 }

@@ -50,7 +50,7 @@ public class ListRecordActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.records_list_layout);
         res = getResources();
-        listRecord=(ListView)findViewById(R.id.records_list_layout_lvRecord);
+        listRecord = (ListView) findViewById(R.id.records_list_layout_lvRecord);
 
 //        SharedPreferences settings = this.getSharedPreferences(LISTEN_ENABLED, 0);
 //        boolean silent = settings.getBoolean("silentMode", false);
@@ -62,12 +62,15 @@ public class ListRecordActivity extends Activity
     }
 
     @Override
-    protected void onResume() {
-        if (Main.updateExternalStorageState() == MEDIA_MOUNTED) {
+    protected void onResume()
+    {
+        if (Main.updateExternalStorageState() == MEDIA_MOUNTED)
+        {
             String filepath = Environment.getExternalStorageDirectory().getPath();
             final File file = new File(filepath, FILE_DIRECTORY);
 
-            if (!file.exists()) {
+            if (!file.exists())
+            {
                 file.mkdirs();
             }
 
@@ -84,18 +87,22 @@ public class ListRecordActivity extends Activity
 
             final MyCallsAdapter adapter = new MyCallsAdapter(this, listDir);
 
-            listRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            listRecord.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
 
                 public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
+                                        int position, long id)
+                {
                     adapter.showPromotionPieceDialog(listDir.get(position)
                             .getCallName(), position);
                 }
             });
 
-            adapter.sort(new Comparator<Model>() {
+            adapter.sort(new Comparator<Model>()
+            {
 
-                public int compare(Model arg0, Model arg1) {
+                public int compare(Model arg0, Model arg1)
+                {
                     Long date1 = Long.valueOf(arg0.getCallName().substring(1, 15));
                     Long date2 = Long.valueOf(arg1.getCallName().substring(1, 15));
                     return (date1 > date2 ? -1 : (date1 == date2 ? 0 : 1));
@@ -105,25 +112,38 @@ public class ListRecordActivity extends Activity
 
             listRecord.setAdapter(adapter);
         }
-        else if (Main.updateExternalStorageState() == MEDIA_MOUNTED_READ_ONLY) {
+        else if (Main.updateExternalStorageState() == MEDIA_MOUNTED_READ_ONLY)
+        {
             listRecord.setVisibility(ScrollView.GONE);
             showDialog(NO_MEMORY_CARD);
-        } else {
+        }
+        else
+        {
             listRecord.setVisibility(ScrollView.GONE);
             showDialog(NO_MEMORY_CARD);
         }
 
         super.onResume();
     }
-    private List<Model> ListDir2(File f) {
+
+    private List<Model> ListDir2(File f)
+    {
         File[] files = f.listFiles();
         List<Model> fileList = new ArrayList<Model>();
-        for (File file : files) {
+        for (File file : files)
+        {
             Model mModel = new Model(file.getName());
             String phonenum = mModel.getCallName().substring(16,
                     mModel.getCallName().length() - 4);
+            String uriImage = getBitmapAvatar(phonenum);
             mModel.setUserNameFromContact(getContactName(phonenum));
+
+            if (!uriImage.equals(""))
+            {
+                mModel.setUriImage(uriImage);
+            }
             fileList.add(mModel);
+
         }
 
         Collections.sort(fileList);
@@ -132,12 +152,13 @@ public class ListRecordActivity extends Activity
         return fileList;
     }
 
-    private String getContactName(String phoneNum) {
+    private String getContactName(String phoneNum)
+    {
         String res = phoneNum;
         Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Phone.NUMBER };
+                ContactsContract.CommonDataKinds.Phone.NUMBER};
         String selection = null;// =
         // ContactsContract.CommonDataKinds.Phone.NUMBER
         // + " = ?";
@@ -149,14 +170,17 @@ public class ListRecordActivity extends Activity
                 .getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
         int indexNumber = names
                 .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-        if (names.getCount() > 0) {
+        if (names.getCount() > 0)
+        {
             names.moveToFirst();
-            do {
+            do
+            {
                 String name = names.getString(indexName);
                 String number = names.getString(indexNumber)
                         .replaceAll("-", "");
 
-                if (number.compareTo(phoneNum) == 0) {
+                if (number.compareTo(phoneNum) == 0)
+                {
                     res = name;
                     break;
                 }
@@ -165,5 +189,28 @@ public class ListRecordActivity extends Activity
         }
 
         return res;
+    }
+
+    private String getBitmapAvatar(String phoneNum)
+    {
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String[] projection = new String[]{
+                ContactsContract.CommonDataKinds.Phone.NUMBER,
+                ContactsContract.CommonDataKinds.Phone.PHOTO_ID
+        };
+        String[] params = new String[]{phoneNum};
+        Cursor cur = getContentResolver().query(uri, projection, ContactsContract.CommonDataKinds.Phone.NUMBER + "=?",
+                params, null);
+        int uriImageIndex = cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID);
+        if (cur.getCount() > 0)
+        {
+            cur.moveToFirst();
+            String urlImage = cur.getString(uriImageIndex);
+            if (urlImage != null || !urlImage.equals(""))
+            {
+                return urlImage;
+            }
+        }
+        return "";
     }
 }

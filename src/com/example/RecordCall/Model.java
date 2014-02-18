@@ -4,6 +4,7 @@ package com.example.RecordCall;
 public class Model implements Comparable<Model> {
     private String callName;
     private String userNameFromContact;
+    private String uriImage;
    
     public String getUserNameFromContact() {
         return userNameFromContact;
@@ -31,6 +32,14 @@ public class Model implements Comparable<Model> {
            Long date2 = Long.valueOf(another.getCallName().substring(1, 15));
            return (date2>date1 ? -1 : (date2==date1 ? 0 : 1));
     }
-   
-   
+
+    public String getUriImage()
+    {
+        return uriImage;
+    }
+
+    public void setUriImage(String uriImage)
+    {
+        this.uriImage = uriImage;
+    }
 }

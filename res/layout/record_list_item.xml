@@ -7,12 +7,12 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@drawable/background_layout"
             >
         <ImageView
                 android:id="@+id/record_list_item_ivAvatar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:src="@drawable/ava_default_person"
                 android:layout_marginRight="5dp"
                 />
@@ -27,12 +27,12 @@
                 android:layout_marginRight="5dp"
                 />
         <TextView
-                android:id="@+id/record_list_item_tvPhoneNumber"
+                android:id="@+id/record_list_item_tvOutIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/record_list_item_ivAvatar"
                 android:layout_below="@+id/record_list_item_tvName"
-                android:text="01648064174"
+                android:text="OutComming"
                 android:layout_marginRight="5dp"
                 />
         <TextView
@@ -40,17 +40,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/record_list_item_ivAvatar"
-                android:layout_below="@+id/record_list_item_tvPhoneNumber"
+                android:layout_below="@+id/record_list_item_tvOutIn"
                 android:text="Feb 18, 2014 12:50:29 AM"
-                android:layout_marginRight="5dp"
-                />
-        <TextView
-                android:id="@+id/record_list_item_tvOutIn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/record_list_item_ivAvatar"
-                android:layout_below="@+id/record_list_item_tvDate"
-                android:text="OutComming"
                 android:layout_marginRight="5dp"
                 />
         <ImageView
@@ -58,7 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/record_list_item_tvDate"
                 android:src="@drawable/button_play"
                 android:layout_centerVertical="true"
                 />

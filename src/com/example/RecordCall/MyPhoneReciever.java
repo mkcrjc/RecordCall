@@ -51,7 +51,6 @@ public class MyPhoneReciever extends BroadcastReceiver {
 					myIntent.putExtra("commandType", STATE_INCOMING_NUMBER);
 					myIntent.putExtra("phoneNumber",  phoneNumber);
 					context.startService(myIntent);
-					
 				}
 			}
 			else
