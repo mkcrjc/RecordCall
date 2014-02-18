@@ -3,6 +3,7 @@ package com.example.RecordCall;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,10 @@ import android.widget.TabHost;
  */
 public class Main extends TabActivity
 {
+
+    public static final int MEDIA_MOUNTED = 0;
+    public static final int MEDIA_MOUNTED_READ_ONLY = 1;
+    public static final int NO_MEDIA = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -57,5 +62,17 @@ public class Main extends TabActivity
                 }
             }
         });
+    }
+
+    public static int updateExternalStorageState() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return MEDIA_MOUNTED;
+        } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return MEDIA_MOUNTED_READ_ONLY;
+        } else {
+            return NO_MEDIA;
+        }
+
     }
 }
