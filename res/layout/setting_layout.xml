@@ -1,32 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@drawable/background_layout">
-    <RadioGroup
-            android:id="@+id/rgRecordConnect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-        <RadioButton
-                android:id="@+id/rbEnableRecord"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+        >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:background="@drawable/background_layout">
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enable record"
-                android:textColor="@color/white"
-                android:checked="true"
-                android:button="@drawable/custom_radio_button"/>
+                android:text="Setting"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="01dp"
+                android:background="@color/white"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="100dp"
+                android:background="@drawable/customer_block_layout_contact"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:padding="3dp"
+                >
+            <RadioGroup
+                    android:id="@+id/rgRecordConnect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
 
-        <RadioButton
-                android:id="@+id/radioFemale"
+                <RadioButton
+                        android:id="@+id/rbEnableRecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Enable record"
+                        android:textColor="@color/white"
+                        android:checked="true"
+                        android:button="@drawable/custom_radio_button"/>
+                <RadioButton
+                        android:id="@+id/radioFemale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Disable record"
+                        android:textColor="@color/white"
+                        android:button="@drawable/custom_radio_button"/>
+            </RadioGroup>
+        </LinearLayout>
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Disable record"
-                android:textColor="@color/white"
-                android:button="@drawable/custom_radio_button"/>
-    </RadioGroup>
+                android:text="Delete all record"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="01dp"
+                android:background="@color/white"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="70dp"
+                android:background="@drawable/customer_block_layout_contact"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:padding="3dp"
+                android:gravity="center"
+                >
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delete all record"
+                    android:layout_gravity="center"
+                    />
+        </LinearLayout>
 
-
-</LinearLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Help"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="01dp"
+                android:background="@color/white"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="70dp"
+                android:background="@drawable/customer_block_layout_contact"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:padding="3dp"
+                >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help"
+                    />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
