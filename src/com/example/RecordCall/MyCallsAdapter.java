@@ -64,6 +64,7 @@ public class MyCallsAdapter extends ArrayAdapter<Model> {
             Bitmap bitmap = getBitmap(Long.parseLong(list.get(position).getUriImage()));
             ivAvatar.setImageBitmap(bitmap);
         }
+        //dsfdsfds
         else
         {
             ivAvatar.setImageResource(R.drawable.ava_default_person);
